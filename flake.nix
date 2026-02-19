@@ -1,5 +1,5 @@
 {
-  description = "NixOS - Framework 13 (AMD AI 300)";
+  description = "Nix — Framework 13 · MacBook · VM";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
@@ -32,6 +37,7 @@
       home-manager,
       nixos-hardware,
       lanzaboote,
+      nix-darwin,
       foundry,
       claude-code,
       ...
@@ -61,7 +67,40 @@
         ];
       };
 
+      darwinConfigurations.macbook = nix-darwin.lib.darwinSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/macbook
+          ./modules/darwin
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users.resende = import ./home;
+          }
+        ];
+      };
+
+      nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          { nixpkgs.overlays = [ foundry.overlay ]; }
+          ./hosts/vm
+          ./modules/base.nix
+          ./modules/desktop.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users.resende = import ./home;
+          }
+        ];
+      };
+
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
 
       # Project templates — usage: nix flake init --template /etc/nixos#rust
       templates = {

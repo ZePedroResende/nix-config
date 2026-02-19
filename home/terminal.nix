@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   # ── Fish shell ────────────────────────────────────────────────
@@ -15,9 +15,12 @@
       gs = "git status";
       tb = "nc termbin.com 9999";
       weather = "curl -4 http://wttr.in";
+    } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
       nr = "sudo nixos-rebuild switch --flake /etc/nixos#framework";
       nrt = "sudo nixos-rebuild test --flake /etc/nixos#framework";
       nu = "nix flake update --flake /etc/nixos";
+    } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+      dr = "darwin-rebuild switch --flake ~/Developer/personal/other-nix#macbook";
     };
     shellInit = ''
       fish_add_path ~/.local/bin
@@ -72,9 +75,10 @@
   # ── Kitty terminal ────────────────────────────────────────────
   programs.kitty = {
     enable = true;
-    settings = {
-      wayland_titlebar_decoration = true;
-    };
+    settings = { }
+      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+        wayland_titlebar_decoration = true;
+      };
   };
 
   # ── Tmux ──────────────────────────────────────────────────────
