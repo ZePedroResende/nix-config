@@ -1,22 +1,15 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
-  home.stateVersion = "24.11";
-
-  # Shell
-  programs.fish.enable = true;
-
-  # Terminal tools
-  programs.bat.enable = true;
-  programs.ripgrep.enable = true;
-  programs.fzf.enable = true;
-  programs.eza.enable = true;
-
-  # User packages
-  home.packages = with pkgs; [
-    firefox
-    fd
-    jq
-    unzip
+  imports = [
+    ./desktop.nix
+    ./terminal.nix
+    ./editors.nix
+    ./git.nix
+    ./cli.nix
   ];
+
+  home.username = "resende";
+  home.homeDirectory = "/home/resende";
+  home.stateVersion = "24.11";
 }

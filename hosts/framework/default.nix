@@ -1,9 +1,9 @@
-{ inputs, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
     ./hardware.nix
-    inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
+    ./users.nix
   ];
 
   networking.hostName = "bolhao";
@@ -12,24 +12,30 @@
   boot.loader = {
     systemd-boot = {
       enable = true;
-      configurationLimit = 10;
+      configurationLimit = 5;
     };
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot";
-    };
+    efi.canTouchEfiVariables = true;
     timeout = 5;
   };
 
-  # User account
-  users.users.resende = {
-    isNormalUser = true;
-    description = "resende";
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
-    shell = pkgs.fish;
-  };
+  # Plymouth — graphical LUKS unlock + boot splash
+  boot.plymouth.enable = true;
 
-  programs.fish.enable = true;
+  # AMD P-State driver for power management
+  boot.kernelParams = [ "amd_pstate=active" ];
+
+  # CapsLock → hold: Ctrl, tap: Escape
+  services.evremap = {
+    enable = true;
+    settings.device_name = "AT Translated Set 2 keyboard";
+    settings.dual_role = [
+      {
+        input = "KEY_CAPSLOCK";
+        hold = [ "KEY_LEFTCTRL" ];
+        tap = [ "KEY_ESC" ];
+      }
+    ];
+  };
 
   system.stateVersion = "24.11";
 }

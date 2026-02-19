@@ -1,5 +1,5 @@
 {
-  description = "NixOS configuration for Framework 13 (AMD AI 300)";
+  description = "NixOS - Framework 13 (AMD AI 300)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,25 +10,77 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-  };
 
-  outputs = { nixpkgs, home-manager, nixos-hardware, ... }@inputs: {
-    nixosConfigurations.framework = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        ./hosts/framework
-        ./modules/base.nix
-        ./modules/desktop.nix
-        ./modules/laptop.nix
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.resende = import ./home;
-        }
-      ];
+    foundry = {
+      url = "github:shazow/foundry.nix/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
     };
   };
+
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      nixos-hardware,
+      lanzaboote,
+      foundry,
+      claude-code,
+      ...
+    }@inputs:
+    {
+      nixosConfigurations.framework = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          { nixpkgs.overlays = [ foundry.overlay ]; }
+
+          lanzaboote.nixosModules.lanzaboote
+          nixos-hardware.nixosModules.framework-amd-ai-300-series
+
+          ./hosts/framework
+          ./modules/base.nix
+          ./modules/desktop.nix
+          ./modules/hardware.nix
+          ./modules/security.nix
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users.resende = import ./home;
+          }
+        ];
+      };
+
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+
+      # Project templates — usage: nix flake init --template /etc/nixos#rust
+      templates = {
+        rust = {
+          path = ./templates/rust;
+          description = "Rust dev environment (clang, mold, bacon, sccache)";
+        };
+        elixir = {
+          path = ./templates/elixir;
+          description = "Elixir/Phoenix dev environment (elixir, erlang, node)";
+        };
+        node = {
+          path = ./templates/node;
+          description = "Node.js/TypeScript dev environment (node, pnpm)";
+        };
+        python = {
+          path = ./templates/python;
+          description = "Python dev environment (python3, uv)";
+        };
+      };
+    };
 }
