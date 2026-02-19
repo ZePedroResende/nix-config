@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, ... }:
+{ lib, pkgs, modulesPath, ... }:
 
 {
   imports = [
@@ -21,7 +21,12 @@
     memorySize = 4096;
     cores = 4;
     graphics = true;
+    diskSize = 8192; # 8 GB (default 1024 is too small for GNOME)
   };
+
+  # Override NetworkManager from base.nix — use simple DHCP for QEMU's virtual NIC
+  networking.networkmanager.enable = lib.mkForce false;
+  networking.useDHCP = lib.mkForce true;
 
   # Disable firewall in VM (easy access, NAT networking)
   networking.firewall.enable = false;

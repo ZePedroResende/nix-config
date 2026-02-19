@@ -20,7 +20,7 @@
 
       # Formatters / linters
       stylua
-      nixfmt-rfc-style
+      nixfmt
       shellcheck
       shfmt
 

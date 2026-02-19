@@ -84,15 +84,17 @@ in
   # Encrypted DNS to Cloudflare + Quad9. Mullvad VPN overrides when active.
   services.resolved = {
     enable = true;
-    dnsovertls = "true";
-    dns = [
-      "1.1.1.1#cloudflare-dns.com"
-      "9.9.9.9#dns.quad9.net"
-    ];
-    fallbackDns = [
-      "1.1.1.1#cloudflare-dns.com"
-      "9.9.9.9#dns.quad9.net"
-    ];
+    settings.Resolve = {
+      DNS = [
+        "1.1.1.1#cloudflare-dns.com"
+        "9.9.9.9#dns.quad9.net"
+      ];
+      FallbackDNS = [
+        "1.1.1.1#cloudflare-dns.com"
+        "9.9.9.9#dns.quad9.net"
+      ];
+      DNSOverTLS = true;
+    };
   };
 
   # ── USBGuard ──────────────────────────────────────────────────
@@ -122,7 +124,8 @@ in
   };
 
   # ── SSH agent ────────────────────────────────────────────────
-  programs.ssh.startAgent = true;
+  # GNOME provides its own SSH agent (gcr-ssh-agent) — don't start a second one
+  programs.ssh.startAgent = false;
 
   # ── GPG agent ────────────────────────────────────────────────
   programs.gnupg.agent = {

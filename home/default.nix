@@ -2,12 +2,11 @@
 
 {
   imports = [
+    ./desktop.nix
     ./terminal.nix
     ./editors.nix
     ./git.nix
     ./cli.nix
-  ] ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-    ./desktop.nix
   ];
 
   home.username = "resende";

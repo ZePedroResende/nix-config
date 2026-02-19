@@ -1,6 +1,6 @@
-{ config, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
-{
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   # ── XDG directories ──────────────────────────────────────────
   xdg = {
     enable = true;
@@ -8,7 +8,7 @@
       enable = true;
       createDirectories = true;
       extraConfig = {
-        XDG_SCREENSHOTS_DIR = "${config.xdg.userDirs.pictures}/Screenshots";
+        SCREENSHOTS = "${config.xdg.userDirs.pictures}/Screenshots";
       };
     };
     mimeApps = {
@@ -58,7 +58,7 @@
     google-chrome
     librewolf
     slack
-    bitwarden
+    bitwarden-desktop
     spotify-player
 
     # Foundry (forge, cast, anvil, chisel)

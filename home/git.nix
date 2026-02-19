@@ -5,17 +5,20 @@
   programs.git = {
     enable = true;
     lfs.enable = true;
-    delta = {
-      enable = true;
-      options = {
-        navigate = true;
-        side-by-side = true;
-      };
-    };
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
+    };
+  };
+
+  # ── Delta (diff pager) ─────────────────────────────────────────
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      navigate = true;
+      side-by-side = true;
     };
   };
 
