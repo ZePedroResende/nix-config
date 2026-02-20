@@ -13,7 +13,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       # Wallpaper (picks a random image from ~/Pictures/Wallpapers)
       swaybg -m fill -i "$(find "$HOME/Pictures/Wallpapers" -type f | shuf -n 1)" &
       # Night light (warm colors at night)
-      wlsunset -T 6500 -t 3500 &
+      wlsunset -T 6500 -t 3500 -S 06:00 -s 20:00 &
       # Network tray applet
       nm-applet --indicator &
       # Auto-mount USB drives
@@ -39,11 +39,15 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     position = "top";
     height = 24;
     spacing = 0;
-    modules-left = [ "dwl/tags" "dwl/window" ];
+    modules-left = [ "dwl/tags" "dwl/window#layout" "dwl/window" ];
     modules-right = [ "tray" "network" "wireplumber" "battery" "clock" ];
 
     "dwl/tags" = {
       num-tags = 9;
+    };
+
+    "dwl/window#layout" = {
+      format = "{layout}";
     };
 
     "dwl/window" = {
@@ -93,33 +97,39 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     }
 
     window#waybar {
-      background-color: #1e1e2e;
-      color: #cdd6f4;
+      background-color: #005577;
+      color: #eeeeee;
     }
 
     #tags button {
       padding: 0 5px;
       background: transparent;
-      color: #6c7086;
+      color: #bbbbbb;
       border-bottom: 2px solid transparent;
     }
 
     #tags button.occupied {
-      color: #cdd6f4;
+      color: #eeeeee;
     }
 
     #tags button.focused {
-      color: #89b4fa;
-      border-bottom: 2px solid #89b4fa;
+      color: #ffffff;
+      background-color: #004466;
+      border-bottom: 2px solid #ffffff;
     }
 
     #tags button.urgent {
-      color: #f38ba8;
+      color: #ff6666;
+    }
+
+    #window.layout {
+      padding: 0 8px;
+      color: #ffffff;
     }
 
     #window {
       padding: 0 8px;
-      color: #a6adc8;
+      color: #bbbbbb;
     }
 
     #tray,
@@ -128,15 +138,15 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     #battery,
     #clock {
       padding: 0 8px;
-      color: #cdd6f4;
+      color: #eeeeee;
     }
 
     #battery.warning {
-      color: #fab387;
+      color: #ffaa00;
     }
 
     #battery.critical {
-      color: #f38ba8;
+      color: #ff6666;
     }
   '';
 

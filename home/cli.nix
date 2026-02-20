@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     devenv
+    psmisc
   ];
 
   # Cargo config — use mold linker on Linux (available in Rust devShells)
