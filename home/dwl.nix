@@ -18,8 +18,6 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       nm-applet --indicator &
       # Auto-mount USB drives
       udiskie --automount --tray &
-      # Status bar
-      waybar &
       # Idle management
       swayidle -w \
         timeout 300 'swaylock -f' \
@@ -29,96 +27,118 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       # Clipboard history
       wl-paste --type text --watch cliphist store &
       wl-paste --type image --watch cliphist store &
+      # Status bar
+      exec waybar
     '';
   };
 
-  # ── Waybar (status bar) ───────────────────────────────────────
-  programs.waybar = {
-    enable = true;
-    style = ''
-      #tags button {
-        background: transparent;
-        border: none;
-        color: #585b70;
-        padding: 0 6px;
-      }
 
-      #tags button.occupied {
-        color: #cdd6f4;
-      }
+  # ── Waybar config ────────────────────────────────────────────
+  home.file.".config/waybar/config.jsonc".text = builtins.toJSON {
+    layer = "top";
+    position = "top";
+    height = 24;
+    spacing = 0;
+    modules-left = [ "dwl/tags" "dwl/window" ];
+    modules-right = [ "tray" "network" "wireplumber" "battery" "clock" ];
 
-      #tags button.focused {
-        color: #89b4fa;
-        border-bottom: 2px solid #89b4fa;
-      }
+    "dwl/tags" = {
+      num-tags = 9;
+    };
 
-      #tags button.urgent {
-        color: #f38ba8;
-      }
+    "dwl/window" = {
+      format = "{title}";
+      max-length = 50;
+    };
 
-      #battery.critical {
-        background-color: #ff0000;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 16px;
-        padding: 0 12px;
-        border-radius: 4px;
-        animation: blink 1s infinite;
-      }
+    tray = {
+      spacing = 8;
+    };
 
-      @keyframes blink {
-        50% { background-color: #990000; }
-      }
+    network = {
+      format-wifi = "󰤨 {essid}";
+      format-ethernet = "󰈀 Wired";
+      format-disconnected = "󰤭 Off";
+      tooltip-format = "{ifname}: {ipaddr}/{cidr}";
+    };
 
-      #battery.warning {
-        color: #f9e2af;
-      }
-    '';
-    settings = {
-      mainBar = {
-        layer = "top";
-        position = "top";
-        height = 30;
-        modules-left = [ "dwl/tags" ];
-        modules-center = [ "clock" ];
-        modules-right = [ "pulseaudio" "battery" "network" "tray" ];
+    wireplumber = {
+      format = "{icon} {volume}%";
+      format-muted = "󰝟 Mute";
+      format-icons = [ "󰖀" "󰕾" ];
+    };
 
-        clock = {
-          format = "{:%H:%M}";
-          format-alt = "{:%a %d %b %Y}";
-          tooltip-format = "{:%A, %B %d, %Y}";
-        };
-
-        battery = {
-          states = {
-            warning = 30;
-            critical = 10;
-          };
-          format = "{icon} {capacity}%";
-          format-critical = "  {capacity}% LOW BATTERY";
-          format-icons = [ "" "" "" "" "" ];
-          interval = 10;
-        };
-
-        network = {
-          format-wifi = " {signalStrength}%";
-          format-ethernet = " {ipaddr}";
-          format-disconnected = "Disconnected";
-        };
-
-        pulseaudio = {
-          format = "{icon} {volume}%";
-          format-muted = "Muted";
-          format-icons = { default = [ "" "" "" ]; };
-          on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        };
-
-        tray = {
-          spacing = 10;
-        };
+    battery = {
+      states = {
+        warning = 30;
+        critical = 10;
       };
+      format = "{icon} {capacity}%";
+      format-charging = "󰂄 {capacity}%";
+      format-icons = [ "󰂃" "󰁺" "󰁼" "󰁾" "󰂀" "󰁹" ];
+    };
+
+    clock = {
+      format = "󰥔 {:%a %b %d  %H:%M}";
     };
   };
+
+  home.file.".config/waybar/style.css".text = ''
+    * {
+      font-family: "JetBrainsMono Nerd Font";
+      font-size: 13px;
+      min-height: 0;
+      border: none;
+      border-radius: 0;
+    }
+
+    window#waybar {
+      background-color: #1e1e2e;
+      color: #cdd6f4;
+    }
+
+    #tags button {
+      padding: 0 5px;
+      background: transparent;
+      color: #6c7086;
+      border-bottom: 2px solid transparent;
+    }
+
+    #tags button.occupied {
+      color: #cdd6f4;
+    }
+
+    #tags button.focused {
+      color: #89b4fa;
+      border-bottom: 2px solid #89b4fa;
+    }
+
+    #tags button.urgent {
+      color: #f38ba8;
+    }
+
+    #window {
+      padding: 0 8px;
+      color: #a6adc8;
+    }
+
+    #tray,
+    #network,
+    #wireplumber,
+    #battery,
+    #clock {
+      padding: 0 8px;
+      color: #cdd6f4;
+    }
+
+    #battery.warning {
+      color: #fab387;
+    }
+
+    #battery.critical {
+      color: #f38ba8;
+    }
+  '';
 
   # ── Cursor theme ─────────────────────────────────────────────
   home.pointerCursor = {

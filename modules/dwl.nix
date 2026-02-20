@@ -1,21 +1,21 @@
 { pkgs, ... }:
 
 let
-  # dwl with custom config.h + community patches
   dwl-custom = (pkgs.dwl.override {
     configH = builtins.readFile ./dwl-config.h;
   }).overrideAttrs (old: {
     patches = (old.patches or []) ++ [
+      ./patches/ipc.patch
       ./patches/pertag.patch
       ./patches/movestack.patch
-      ./patches/focusdir.patch
-      ./patches/warpcursor.patch
+      ./patches/ipcpertag.patch
     ];
   });
 
   # Wrapper script to launch dwl with user autostart
+  # Uses /run/current-system/sw/bin/dwl so it always picks up the latest rebuild
   dwl-wrapped = pkgs.writeShellScriptBin "dwl-session" ''
-    exec ${dwl-custom}/bin/dwl -s "$HOME/.config/dwl/autostart.sh"
+    exec /run/current-system/sw/bin/dwl -s "$HOME/.config/dwl/autostart.sh"
   '';
 
   # Wayland session entry for GDM
@@ -66,8 +66,8 @@ in
     wlsunset
     networkmanagerapplet
     udiskie
-    xfce.thunar
-    xfce.tumbler
+    thunar
+    tumbler
   ];
 
   # Trash / mount support for Thunar

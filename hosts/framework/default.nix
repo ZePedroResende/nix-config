@@ -37,5 +37,8 @@
     ];
   };
 
+  # Fingerprint reader
+  services.fprintd.enable = true;
+
   system.stateVersion = "24.11";
 }

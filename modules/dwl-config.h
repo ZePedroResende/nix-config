@@ -106,9 +106,6 @@ LIBINPUT_CONFIG_TAP_MAP_LMR -- 1/2/3 finger tap maps to left/middle/right
 */
 static const enum libinput_config_tap_button_map button_map = LIBINPUT_CONFIG_TAP_MAP_LRM;
 
-/* Hide cursor after N seconds of inactivity (unclutter patch) */
-static const int cursor_timeout = 5;
-
 /* i3wm uses Super (Logo) key as modifier */
 #define MODKEY WLR_MODIFIER_LOGO
 
@@ -152,11 +149,8 @@ static const Key keys[] = {
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_J,          movestack,      {.i = +1} },
 	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_K,          movestack,      {.i = -1} },
 
-	/* ── Directional focus ($mod+Ctrl+h/j/k/l) ──────────────────── */
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_h,          focusdir,       {.ui = 0} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_l,          focusdir,       {.ui = 1} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_k,          focusdir,       {.ui = 2} },
-	{ MODKEY|WLR_MODIFIER_CTRL,  XKB_KEY_j,          focusdir,       {.ui = 3} },
+	/* ── Promote to master ($mod+Shift+Return) ──────────────────── */
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Return,     zoom,           {0} },
 
 	/* ── Layouts (i3 equivalents) ────────────────────────────────── */
 	/* $mod+e = tiled (i3: toggle split) */
