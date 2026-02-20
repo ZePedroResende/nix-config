@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  users.users.root.hashedPassword = "!"; # disable root login
+
   users.users.resende = {
     isNormalUser = true;
     description = "resende";
@@ -15,11 +17,4 @@
   };
 
   programs.fish.enable = true;
-
-  # 1Password
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "resende" ];
-  };
 }

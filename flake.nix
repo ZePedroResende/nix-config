@@ -29,6 +29,11 @@
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
+
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -40,6 +45,7 @@
       nix-darwin,
       foundry,
       claude-code,
+      caelestia-shell,
       ...
     }@inputs:
     {
@@ -56,13 +62,23 @@
           ./modules/desktop.nix
           ./modules/hardware.nix
           ./modules/security.nix
+          ./modules/hyprland.nix
+          ./modules/dwl.nix
 
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
             home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users.resende = import ./home;
+            home-manager.users.resende = {
+              imports = [
+                ./home
+                ./home/hyprland.nix
+                ./home/dwl.nix
+                caelestia-shell.homeManagerModules.default
+              ];
+            };
           }
         ];
       };

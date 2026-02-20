@@ -101,9 +101,13 @@
 
     # Fonts
     nerd-fonts.jetbrains-mono
+    nerd-fonts.caskaydia-cove
+    material-symbols
     source-sans-pro
     source-serif-pro
     noto-fonts-color-emoji
+
+    sbctl
   ];
 
   # Font configuration — optimized for Framework's high-DPI display
@@ -118,6 +122,16 @@
       };
       hinting.enable = false; # better on high-DPI
     };
+  };
+
+  # Audio — PipeWire (shared by GNOME + Hyprland)
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
   };
 
   # Printing (CUPS)

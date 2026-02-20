@@ -2,7 +2,7 @@
 
 let
   # Set to true after first boot + sbctl create-keys + sbctl enroll-keys --microsoft
-  secureBoot = false;
+  secureBoot = true;
 in
 {
   # ── Secure Boot (Lanzaboote) ──────────────────────────────────
@@ -17,7 +17,7 @@ in
   boot.loader.systemd-boot.enable = lib.mkIf secureBoot (lib.mkForce false);
   boot.lanzaboote = lib.mkIf secureBoot {
     enable = true;
-    pkiBundle = "/etc/secureboot";
+    pkiBundle = "/var/lib/sbctl";
   };
 
   # ── Kernel hardening (sysctl) ─────────────────────────────────
