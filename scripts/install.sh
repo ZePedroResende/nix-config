@@ -131,7 +131,8 @@ echo ""
 "$NIX_INSTALL" \
     --root "$MNT" \
     --flake "$MNT/etc/nixos#framework" \
-    --no-channel-copy
+    --no-channel-copy \
+    --no-root-passwd
 
 # ── Done ────────────────────────────────────────────────────────────
 trap - EXIT

@@ -15,9 +15,9 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       enable = true;
       defaultApplications = {
         "text/plain" = [ "org.gnome.TextEditor.desktop" ];
-        "application/pdf" = [ "firefox.desktop" ];
-        "x-scheme-handler/http" = [ "firefox.desktop" ];
-        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "application/pdf" = [ "librewolf.desktop" ];
+        "x-scheme-handler/http" = [ "librewolf.desktop" ];
+        "x-scheme-handler/https" = [ "librewolf.desktop" ];
         "inode/directory" = [ "org.gnome.Nautilus.desktop" ];
       };
     };
@@ -51,6 +51,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       name = "Terminal";
     };
   };
+
 
   # ── Apps ─────────────────────────────────────────────────────
   home.packages = with pkgs; [
