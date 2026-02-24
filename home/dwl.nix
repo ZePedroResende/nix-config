@@ -40,7 +40,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     height = 24;
     spacing = 0;
     modules-left = [ "dwl/tags" "dwl/window#layout" "dwl/window" ];
-    modules-right = [ "tray" "network" "wireplumber" "battery" "clock" ];
+    modules-right = [ "tray" "power-profiles-daemon" "network" "wireplumber" "battery" "clock" ];
 
     "dwl/tags" = {
       num-tags = 9;
@@ -53,6 +53,18 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "dwl/window" = {
       format = "{title}";
       max-length = 50;
+    };
+
+    "power-profiles-daemon" = {
+      format = "{icon}";
+      tooltip-format = "Profile: {profile}\nDriver: {driver}";
+      tooltip = true;
+      format-icons = {
+        default = "󰓅";
+        performance = "󰓅";
+        balanced = "󰾅";
+        power-saver = "󰾆";
+      };
     };
 
     tray = {
@@ -132,8 +144,8 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       color: #bbbbbb;
     }
 
+    #power-profiles-daemon,
     #tray,
-    #network,
     #wireplumber,
     #battery,
     #clock {

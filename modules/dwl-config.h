@@ -34,6 +34,7 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+	{ "[D]",      deck },
 };
 
 /* monitors */
@@ -159,8 +160,8 @@ static const Key keys[] = {
 	{ MODKEY,                    XKB_KEY_e,          setlayout,      {.v = &layouts[0]} },
 	/* $mod+s = monocle (i3: stacking) */
 	{ MODKEY,                    XKB_KEY_s,          setlayout,      {.v = &layouts[2]} },
-	/* $mod+w = floating layout (i3: tabbed) */
-	{ MODKEY,                    XKB_KEY_w,          setlayout,      {.v = &layouts[1]} },
+	/* $mod+w = deck layout (i3: tabbed) */
+	{ MODKEY,                    XKB_KEY_w,          setlayout,      {.v = &layouts[3]} },
 
 	/* $mod+f = toggle fullscreen */
 	{ MODKEY,                    XKB_KEY_f,          togglefullscreen, {0} },
@@ -198,7 +199,7 @@ static const Key keys[] = {
 	TAGKEYS(          XKB_KEY_9, XKB_KEY_parenleft,                  8),
 
 	/* ── Exit ($mod+Shift+e, i3 style) ───────────────────────────── */
-	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_E,          quit,           {0} },
+	{ MODKEY|WLR_MODIFIER_SHIFT, XKB_KEY_Escape,      quit,           {0} },
 
 	/* ── Volume keys ─────────────────────────────────────────────── */
 	{ 0, XKB_KEY_XF86AudioRaiseVolume,  spawn, SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+") },

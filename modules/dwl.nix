@@ -9,6 +9,8 @@ let
       ./patches/pertag.patch
       ./patches/movestack.patch
       ./patches/ipcpertag.patch
+      ./patches/warpcursor.patch
+      ./patches/decklayout.patch
     ];
   });
 
