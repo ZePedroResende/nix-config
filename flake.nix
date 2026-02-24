@@ -59,9 +59,11 @@
 
           ./hosts/framework
           ./modules/base.nix
+          ./modules/theme.nix
           ./modules/desktop.nix
           ./modules/hardware.nix
           ./modules/security.nix
+          ./modules/wayland.nix
           ./modules/hyprland.nix
           ./modules/dwl.nix
 
@@ -101,7 +103,6 @@
       nixosConfigurations.vm = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };
         modules = [
-          { nixpkgs.overlays = [ foundry.overlay ]; }
           ./hosts/vm
           ./modules/base.nix
           ./modules/desktop.nix

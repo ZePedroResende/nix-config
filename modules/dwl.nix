@@ -40,36 +40,23 @@ in
     extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
   };
 
-  # Electron / Chromium Wayland hint
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  # Polkit — needed for privilege escalation prompts
-  security.polkit.enable = true;
-
-  # System packages for dwl session
+  # dwl-specific packages
   environment.systemPackages = with pkgs; [
     dwl-custom
     kitty
     wmenu
-    brightnessctl
-    grim
-    slurp
-    swappy
-    wl-clipboard
     swaylock
     swayidle
     waybar
-    lm_sensors
-    playerctl
     wlr-randr
     mako
     swaybg
-    cliphist
     wlsunset
     networkmanagerapplet
     udiskie
     thunar
     tumbler
+    blueman
   ];
 
   # Trash / mount support for Thunar

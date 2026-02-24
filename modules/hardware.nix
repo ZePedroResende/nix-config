@@ -21,7 +21,7 @@
   # Bluetooth
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;
+    powerOnBoot = false;
   };
 
   # Fingerprint reader
@@ -50,6 +50,16 @@
 
   # SMART disk health monitoring
   services.smartd.enable = true;
+
+  # Logind — lid/power button behavior
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "lock";
+    HandlePowerKey = "suspend";
+    HandlePowerKeyLongPress = "poweroff";
+    IdleAction = "suspend";
+    IdleActionSec = "30min";
+  };
 
   # Framework laptop tools
   environment.systemPackages = with pkgs; [

@@ -1,6 +1,11 @@
-{ ... }:
+{ config, ... }:
 
 {
+  assertions = [{
+    assertion = config.networking.firewall.enable;
+    message = "Firewall must be enabled on non-VM hosts";
+  }];
+
   imports = [
     ./hardware.nix
     ./users.nix
@@ -15,14 +20,14 @@
       configurationLimit = 5;
     };
     efi.canTouchEfiVariables = true;
-    timeout = 5;
+    timeout = 3;
   };
 
   # Plymouth — graphical LUKS unlock + boot splash
   boot.plymouth.enable = true;
 
   # AMD P-State driver for power management
-  boot.kernelParams = [ "amd_pstate=active" ];
+  boot.kernelParams = [ "amd_pstate=active" "quiet" "loglevel=3" ];
 
   # CapsLock → hold: Ctrl, tap: Escape
   services.evremap = {

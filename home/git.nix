@@ -9,6 +9,11 @@
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
+      diff.colorMoved = "zebra";
+      fetch.prune = true;
+      rebase.autoStash = true;
+      branch.sort = "-committerdate";
+      merge.conflictstyle = "diff3";
     };
   };
 

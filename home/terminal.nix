@@ -75,10 +75,48 @@
   # ── Kitty terminal ────────────────────────────────────────────
   programs.kitty = {
     enable = true;
-    settings = { }
-      // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
-        wayland_titlebar_decoration = true;
-      };
+    settings = {
+      font_family = "JetBrainsMono Nerd Font";
+      font_size = 12;
+      background_opacity = "0.95";
+      copy_on_select = "clipboard";
+      confirm_os_window_close = 0;
+
+      # Gruvbox Dark
+      foreground = "#ebdbb2";
+      background = "#282828";
+      selection_foreground = "#655b53";
+      selection_background = "#ebdbb2";
+      cursor = "#ebdbb2";
+      cursor_text_color = "#282828";
+
+      # Black
+      color0 = "#282828";
+      color8 = "#928374";
+      # Red
+      color1 = "#cc241d";
+      color9 = "#fb4934";
+      # Green
+      color2 = "#98971a";
+      color10 = "#b8bb26";
+      # Yellow
+      color3 = "#d79921";
+      color11 = "#fabd2f";
+      # Blue
+      color4 = "#458588";
+      color12 = "#83a598";
+      # Purple
+      color5 = "#b16286";
+      color13 = "#d3869b";
+      # Aqua
+      color6 = "#689d6a";
+      color14 = "#8ec07c";
+      # White
+      color7 = "#a89984";
+      color15 = "#ebdbb2";
+    } // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+      wayland_titlebar_decoration = true;
+    };
   };
 
   # ── Tmux ──────────────────────────────────────────────────────
@@ -98,12 +136,16 @@
       resurrect
     ];
     extraConfig = ''
-      # Catppuccin Mocha colors
-      set -g status-style "bg=#313244,fg=#cdd6f4"
-      set -g pane-border-style "fg=#45475a"
-      set -g pane-active-border-style "fg=#89b4fa"
-      set -g window-status-current-style "fg=#89dceb,bold"
-      set -g message-style "bg=#313244,fg=#a6e3a1"
+      # Gruvbox Dark colors
+      set -g status-style "bg=#3c3836,fg=#ebdbb2"
+      set -g pane-border-style "fg=#504945"
+      set -g pane-active-border-style "fg=#83a598"
+      set -g window-status-current-style "fg=#fabd2f,bold"
+      set -g message-style "bg=#3c3836,fg=#b8bb26"
+
+      # Activity monitoring
+      set -g monitor-activity on
+      set -g visual-activity off
 
       # Splits
       bind v split-window -h -c "#{pane_current_path}"

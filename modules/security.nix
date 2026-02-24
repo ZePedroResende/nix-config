@@ -94,6 +94,7 @@ in
         "9.9.9.9#dns.quad9.net"
       ];
       DNSOverTLS = true;
+      DNSSEC = true;
     };
   };
 
@@ -132,7 +133,10 @@ in
     enable = true;
     enableSSHSupport = false;
     pinentryPackage = pkgs.pinentry-gnome3;
-    settings.default-cache-ttl = 14400; # 4 hours
+    settings = {
+      default-cache-ttl = 3600; # 1 hour
+      max-cache-ttl = 7200; # 2 hours
+    };
   };
 
   # ── GNOME Keyring ────────────────────────────────────────────

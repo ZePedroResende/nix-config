@@ -31,8 +31,8 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         gaps_in = 4;
         gaps_out = 8;
         border_size = 2;
-        "col.active_border" = "rgb(89b4fa) rgb(cba6f7) 45deg";
-        "col.inactive_border" = "rgb(45475a)";
+        "col.active_border" = "rgb(83a598) rgb(d3869b) 45deg";
+        "col.inactive_border" = "rgb(504945)";
         layout = "dwindle";
         allow_tearing = false;
       };
@@ -51,7 +51,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           enabled = true;
           range = 20;
           render_power = 3;
-          color = "rgba(1a1a2eee)";
+          color = "rgba(282828ee)";
         };
       };
 
@@ -234,7 +234,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
 
       label = [{
         text = "$TIME";
-        color = "rgb(cdd6f4)";
+        color = "rgb(ebdbb2)";
         font_size = 64;
         font_family = "JetBrainsMono Nerd Font";
         position = "0, 120";
@@ -248,9 +248,9 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         dots_size = 0.26;
         dots_spacing = 0.15;
         dots_center = true;
-        outer_color = "rgb(89b4fa)";
-        inner_color = "rgb(1e1e2e)";
-        font_color = "rgb(cdd6f4)";
+        outer_color = "rgb(83a598)";
+        inner_color = "rgb(282828)";
+        font_color = "rgb(ebdbb2)";
         fade_on_empty = true;
         placeholder_text = "<i>Password...</i>";
         hide_input = false;

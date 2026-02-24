@@ -7,31 +7,35 @@
 
   outputs = { nixpkgs, ... }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          rustup
-          clang
-          mold
-          pkg-config
-          openssl
+      devShells = forAllSystems (system:
+        let pkgs = nixpkgs.legacyPackages.${system}; in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              rustup
+              clang
+              mold
+              pkg-config
+              openssl
 
-          # Dev tools
-          bacon
-          sccache
+              # Dev tools
+              bacon
+              sccache
 
-          # LSP + formatters (LazyVim picks these up from PATH)
-          rust-analyzer
-        ];
+              # LSP + formatters (LazyVim picks these up from PATH)
+              rust-analyzer
+            ];
 
-        RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
+            RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
 
-        shellHook = ''
-          echo "Rust devShell active"
-        '';
-      };
+            shellHook = ''
+              echo "Rust devShell active"
+            '';
+          };
+        });
     };
 }

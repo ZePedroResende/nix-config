@@ -16,6 +16,8 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       wlsunset -T 6500 -t 3500 -S 06:00 -s 20:00 &
       # Network tray applet
       nm-applet --indicator &
+      # Bluetooth tray applet
+      blueman-applet &
       # Auto-mount USB drives
       udiskie --automount --tray &
       # Idle management
@@ -40,7 +42,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     height = 24;
     spacing = 0;
     modules-left = [ "dwl/tags" "dwl/window#layout" "dwl/window" ];
-    modules-right = [ "tray" "power-profiles-daemon" "network" "wireplumber" "battery" "clock" ];
+    modules-right = [ "idle_inhibitor" "tray" "power-profiles-daemon" "network" "wireplumber" "battery" "clock" ];
 
     "dwl/tags" = {
       num-tags = 9;
@@ -53,6 +55,14 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     "dwl/window" = {
       format = "{title}";
       max-length = 50;
+    };
+
+    "idle_inhibitor" = {
+      format = "{icon}";
+      format-icons = {
+        activated = "󰅶";
+        deactivated = "󰛊";
+      };
     };
 
     "power-profiles-daemon" = {
@@ -144,6 +154,7 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
       color: #bbbbbb;
     }
 
+    #idle_inhibitor,
     #power-profiles-daemon,
     #tray,
     #wireplumber,
@@ -151,6 +162,10 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     #clock {
       padding: 0 8px;
       color: #eeeeee;
+    }
+
+    #idle_inhibitor.activated {
+      color: #ffffff;
     }
 
     #battery.warning {
@@ -188,9 +203,9 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     default-timeout=5000
     border-size=2
     border-radius=5
-    background-color=#1e1e2eff
-    text-color=#cdd6f4ff
-    border-color=#89b4faff
+    background-color=#282828ff
+    text-color=#ebdbb2ff
+    border-color=#83a598ff
     font=JetBrainsMono Nerd Font 10
     width=350
     margin=10
@@ -201,15 +216,15 @@ lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   programs.swaylock = {
     enable = true;
     settings = {
-      color = "1e1e2e";
+      color = "282828";
       font = "JetBrainsMono Nerd Font";
       indicator-radius = 100;
       indicator-thickness = 7;
-      inside-color = "1e1e2e";
-      key-hl-color = "89b4fa";
-      ring-color = "45475a";
-      ring-ver-color = "89b4fa";
-      text-color = "cdd6f4";
+      inside-color = "282828";
+      key-hl-color = "83a598";
+      ring-color = "504945";
+      ring-ver-color = "83a598";
+      text-color = "ebdbb2";
       show-failed-attempts = true;
     };
   };

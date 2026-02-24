@@ -33,6 +33,17 @@
   # Locale
   time.timeZone = "Europe/Lisbon";
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "pt_PT.UTF-8";
+    LC_IDENTIFICATION = "pt_PT.UTF-8";
+    LC_MEASUREMENT = "pt_PT.UTF-8";
+    LC_MONETARY = "pt_PT.UTF-8";
+    LC_NAME = "pt_PT.UTF-8";
+    LC_NUMERIC = "pt_PT.UTF-8";
+    LC_PAPER = "pt_PT.UTF-8";
+    LC_TELEPHONE = "pt_PT.UTF-8";
+    LC_TIME = "pt_PT.UTF-8";
+  };
 
   # Networking
   networking.networkmanager = {
@@ -95,10 +106,6 @@
     gnumake
     cmake
 
-    # GNOME extras
-    gnome-tweaks
-    gnome-extension-manager
-
     # Fonts
     nerd-fonts.jetbrains-mono
     nerd-fonts.caskaydia-cove
@@ -106,6 +113,8 @@
     source-sans-pro
     source-serif-pro
     noto-fonts-color-emoji
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
 
     sbctl
   ];
@@ -115,9 +124,9 @@
     fontDir.enable = true;
     fontconfig = {
       defaultFonts = {
-        serif = [ "Source Serif Pro" ];
-        sansSerif = [ "Source Sans Pro" ];
-        monospace = [ "JetBrainsMono Nerd Font" ];
+        serif = [ "Source Serif Pro" "Noto Serif CJK SC" "Noto Color Emoji" ];
+        sansSerif = [ "Source Sans Pro" "Noto Sans CJK SC" "Noto Color Emoji" ];
+        monospace = [ "JetBrainsMono Nerd Font" "Noto Sans Mono CJK SC" "Noto Color Emoji" ];
         emoji = [ "Noto Color Emoji" ];
       };
       hinting.enable = false; # better on high-DPI
