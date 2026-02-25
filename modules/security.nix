@@ -100,11 +100,30 @@ in
 
   # ── USBGuard ──────────────────────────────────────────────────
   # Devices present at boot are trusted; new USB devices are blocked until approved.
-  # After first boot: sudo usbguard generate-policy | sudo tee /etc/usbguard/rules.conf
+  # Permanent rules below allow known devices to be hot-plugged at any time.
   services.usbguard = {
     enable = true;
     presentDevicePolicy = "allow";
     IPCAllowedUsers = [ "root" "resende" ];
+    rules = ''
+      # Linux Foundation root hubs (internal)
+      allow id 1d6b:0002
+      allow id 1d6b:0003
+
+      # Framework internal devices
+      allow id 32ac:* # All Framework expansion cards & modules
+
+      # Internal peripherals
+      allow id 27c6:609c # Goodix Fingerprint reader
+      allow id 0e8d:0717 # MediaTek Wireless (WiFi/BT)
+
+      # Thunderbolt dock — TI TUSB8041 USB hub
+      allow id 0451:8142
+
+      # Dock-connected devices
+      allow id 145f:0203 # Trust USB Camera
+      allow id 29ea:0102 # Kinesis Advantage 2 keyboard
+    '';
   };
 
   # ── AppArmor ─────────────────────────────────────────────────
